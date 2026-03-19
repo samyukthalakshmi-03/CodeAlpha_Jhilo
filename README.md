@@ -40,37 +40,6 @@ A full-stack social media application built with Express.js, MongoDB, and vanill
 - **Docker Compose** for orchestration
 - **Nginx** for frontend serving and API proxy
 
-## Project Structure
-
-```
-Jhilo/
-├── server/
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── Post.js
-│   │   └── Comment.js
-│   ├── routes/
-│   │   ├── auth.js
-│   │   ├── users.js
-│   │   ├── posts.js
-│   │   └── comments.js
-│   ├── middleware/
-│   │   └── auth.js
-│   ├── config/
-│   │   └── index.js
-│   ├── .env
-│   ├── server.js
-│   ├── package.json
-│   └── Dockerfile
-├── client/
-│   ├── index.html
-│   ├── styles.css
-│   └── app.js
-├── docker-compose.yml
-├── nginx.conf
-└── README.md
-```
-
 
 ## Usage Guide
 
