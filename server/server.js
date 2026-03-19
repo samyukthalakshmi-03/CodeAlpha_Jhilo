@@ -1,3 +1,4 @@
+const express = require('express');
 const createApp = require('./app');
 const connectDB = require('./db');
 const config = require('./config');
@@ -6,9 +7,14 @@ const config = require('./config');
   await connectDB();
 
   const app = createApp();
+  
+  // Wrap the app to serve under /api prefix for local development consistency
+  const mainApp = express();
+  mainApp.use('/api', app);
+  
   const PORT = config.port;
 
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  mainApp.listen(PORT, () => {
+    console.log(`Server running on port ${PORT} with /api prefix`);
   });
 })();
