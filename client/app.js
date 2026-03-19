@@ -206,6 +206,7 @@ function switchPage(page) {
     loadFeed();
   } else if (page === 'profile') {
     document.getElementById('profilePage').classList.add('active');
+    document.querySelector('.profile-edit').style.display = 'block'; // Show edit for own profile
     loadProfile();
   } else if (page === 'explore') {
     document.getElementById('explorePage').classList.add('active');
@@ -281,9 +282,9 @@ function createPostElement(post) {
   postDiv.className = 'post';
   postDiv.innerHTML = `
     <div class="post-header">
-      <img src="${getAvatarURL(post.author)}" alt="Avatar" onerror="this.onerror=null; this.src=getAvatarURL({username: '${post.author.username}'});" />
+      <img src="${getAvatarURL(post.author)}" alt="Avatar" class="clickable-avatar" onclick="viewUserProfile('${post.author._id}')" onerror="this.onerror=null; this.src=getAvatarURL({username: '${post.author.username}'});" />
       <div class="post-meta">
-        <div class="post-author">${post.author.username}</div>
+        <div class="post-author clickable-username" onclick="viewUserProfile('${post.author._id}')">${post.author.username}</div>
         <div class="post-time">${new Date(post.createdAt).toLocaleDateString()}</div>
       </div>
       ${post.author._id === currentUser.id ? `<button class="post-delete" onclick="deletePost('${post._id}')">Delete</button>` : ''}
@@ -728,16 +729,76 @@ function createUserCard(user) {
   const card = document.createElement('div');
   card.className = 'user-card';
   card.innerHTML = `
-    <img src="${getAvatarURL(user)}" alt="${user.username}" />
-    <h3>${user.username}</h3>
-    <p>${user.bio || 'No bio'}</p>
-    <p style="font-size: 12px; margin-bottom: 12px;">${user.followers.length} followers</p>
-    <button class="follow-btn ${isFollowing ? 'following' : ''}" onclick="toggleFollow('${user._id}', this)">
+    <div class="user-card-link" onclick="viewUserProfile('${user._id}')">
+      <img src="${getAvatarURL(user)}" alt="${user.username}" />
+      <h3>${user.username}</h3>
+      <p>${user.bio || 'No bio'}</p>
+      <p style="font-size: 12px; margin-bottom: 12px;">${user.followers.length} followers</p>
+    </div>
+    <button class="follow-btn ${isFollowing ? 'following' : ''}" onclick="event.stopPropagation(); toggleFollow('${user._id}', this)">
       ${isFollowing ? 'Following' : 'Follow'}
     </button>
   `;
   
   return card;
+}
+
+async function viewUserProfile(userId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/users/${userId}`);
+    const user = await response.json();
+    
+    // Clear profile page content and update with this user's info
+    currentPage = 'other-profile';
+    
+    // Update nav items - remove active from all
+    document.querySelectorAll('.nav-item').forEach((item) => {
+      item.classList.remove('active');
+    });
+
+    // Update active page
+    document.querySelectorAll('.page').forEach((p) => {
+      p.classList.remove('active');
+    });
+    
+    const profilePage = document.getElementById('profilePage');
+    profilePage.classList.add('active');
+    
+    // Hide edit button for other users
+    document.querySelector('.profile-edit').style.display = 'none';
+    document.getElementById('editProfileForm').style.display = 'none';
+    
+    // Update profile UI
+    document.getElementById('profileUsername').textContent = user.username;
+    document.getElementById('profileBio').textContent = user.bio || 'No bio yet';
+    const profileAvatar = document.getElementById('profileAvatar');
+    profileAvatar.src = getAvatarURL(user);
+
+    document.getElementById('postsCount').textContent = user.posts ? user.posts.length : 0;
+    document.getElementById('followersCount').textContent = user.followers.length;
+    document.getElementById('followingCount').textContent = user.following.length;
+    
+    // Load this user's posts
+    const postsResponse = await fetch(`${API_BASE_URL}/posts/user/${user._id}`);
+    const userPosts = await postsResponse.json();
+    
+    const userPostsContainer = document.getElementById('userPostsContainer');
+    userPostsContainer.innerHTML = '';
+    
+    if (userPosts.length === 0) {
+      userPostsContainer.innerHTML = '<p class="loading">No posts yet.</p>';
+    } else {
+      userPosts.forEach((post) => {
+        userPostsContainer.appendChild(createPostElement(post));
+      });
+    }
+    
+    // Scroll to top
+    window.scrollTo(0, 0);
+  } catch (error) {
+    console.error('Error loading user profile:', error);
+    showToast('Error loading profile');
+  }
 }
 
 async function toggleFollow(userId, button) {

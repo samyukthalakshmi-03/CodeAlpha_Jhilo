@@ -843,9 +843,23 @@ body {
   color: var(--text-primary);
 }
 
-/* ================================
-   UTILITIES
-   ================================ */
+.user-card-link {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.user-card-link:hover {
+  opacity: 0.8;
+}
+
+.clickable-avatar, .clickable-username {
+  cursor: pointer;
+}
+
+.clickable-username:hover {
+  text-decoration: underline;
+  color: var(--primary-color);
+}
 .loading {
   text-align: center;
   color: var(--text-secondary);
