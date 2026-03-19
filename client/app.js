@@ -145,6 +145,13 @@ document.getElementById('signupFormElement').addEventListener('submit', async (e
 function logout() {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
+  
+  // Clear form fields
+  const loginForm = document.getElementById('loginFormElement');
+  const signupForm = document.getElementById('signupFormElement');
+  if (loginForm) loginForm.reset();
+  if (signupForm) signupForm.reset();
+  
   showAuthSection();
 }
 
