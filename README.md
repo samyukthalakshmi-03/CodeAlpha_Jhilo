@@ -72,31 +72,6 @@ Jhilo/
 ```
 
 
-
-### Option 2: Manual Setup
-
-1. **Prerequisites**
-   - Node.js (v18+)
-   - MongoDB running locally
-
-2. **Backend Setup**
-   ```bash
-   cd server
-   npm install
-   
-   # Update .env file with your MongoDB URI and JWT secret
-   npm start
-   ```
-
-3. **Frontend Setup**
-   ```bash
-   # Start a local server for the client folder
-   cd client
-   npx serve .
-   # or use Python: python -m http.server 3000
-   ```
-
-
 ## Usage Guide
 
 ### Registration & Login
