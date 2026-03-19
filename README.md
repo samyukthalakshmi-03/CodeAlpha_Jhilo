@@ -71,21 +71,7 @@ Jhilo/
 └── README.md
 ```
 
-## Setup & Installation
 
-### Option 1: Using Docker (Recommended)
-
-1. **Prerequisites**
-   - Docker and Docker Compose installed
-
-2. **Run the application**
-   ```bash
-   docker-compose up
-   ```
-
-3. **Access the app**
-   - Frontend: http://localhost
-   - Backend API: http://localhost/api
 
 ### Option 2: Manual Setup
 
@@ -110,41 +96,6 @@ Jhilo/
    # or use Python: python -m http.server 3000
    ```
 
-4. **Access the app**
-   - Frontend: http://localhost:3000 (or your server port)
-   - Backend API: http://localhost:5000/api
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-
-### Users
-- `GET /api/users` - Get all users
-- `GET /api/users/:userId` - Get user profile
-- `GET /api/users/profile/me` - Get current user profile
-- `PUT /api/users/profile/me` - Update current user profile
-- `POST /api/users/:userId/follow` - Follow user
-- `POST /api/users/:userId/unfollow` - Unfollow user
-
-### Posts
-- `GET /api/posts` - Get all posts (feed)
-- `GET /api/posts/:postId` - Get post by ID
-- `GET /api/posts/user/:userId` - Get user's posts
-- `POST /api/posts` - Create post (authenticated)
-- `PUT /api/posts/:postId` - Update post (authenticated, author only)
-- `DELETE /api/posts/:postId` - Delete post (authenticated, author only)
-- `POST /api/posts/:postId/like` - Like post (authenticated)
-- `POST /api/posts/:postId/unlike` - Unlike post (authenticated)
-
-### Comments
-- `GET /api/comments/post/:postId` - Get post comments
-- `POST /api/comments` - Create comment (authenticated)
-- `PUT /api/comments/:commentId` - Update comment (authenticated, author only)
-- `DELETE /api/comments/:commentId` - Delete comment (authenticated, author only)
-- `POST /api/comments/:commentId/like` - Like comment (authenticated)
-- `POST /api/comments/:commentId/unlike` - Unlike comment (authenticated)
 
 ## Usage Guide
 
@@ -175,43 +126,6 @@ Jhilo/
 3. Update bio and avatar URL
 4. Click "Save"
 
-## Environment Variables
 
-### Server (.env)
-```
-MONGO_URI=mongodb://localhost:27017/social-media
-JWT_SECRET=your_super_secret_jwt_key_please_change_in_production
-PORT=5000
-NODE_ENV=development
-```
 
-## Future Enhancements
 
-- 🔍 Search functionality
-- 🏷️ Hashtags support
-- 📸 Image upload directly
-- 🔔 Real-time notifications
-- 💬 Direct messaging
-- 📊 User statistics & analytics
-- 🌙 Dark mode theme
-- 📱 Mobile app version
-
-## Security Considerations
-
-⚠️ **Important**: This is a learning project. For production use:
-- Change JWT_SECRET in environment variables
-- Use HTTPS
-- Implement rate limiting
-- Add input validation & sanitization
-- Use environment-specific configurations
-- Implement CSRF protection
-- Add comprehensive error handling
-- Enable CORS properly with specific origins
-
-## Contributing
-
-Feel free to fork and contribute improvements!
-
-## License
-
-MIT License - feel free to use this project for learning and personal projects.
