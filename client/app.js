@@ -82,7 +82,15 @@ document.getElementById('loginFormElement').addEventListener('submit', async (e)
       body: JSON.stringify({ email, password })
     });
     
-    const data = await response.json();
+    let data;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    } else {
+      const text = await response.text();
+      console.error('Non-JSON response:', text);
+      throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+    }
     
     if (response.ok) {
       localStorage.setItem('token', data.token);
@@ -93,7 +101,7 @@ document.getElementById('loginFormElement').addEventListener('submit', async (e)
     }
   } catch (error) {
     console.error('Login error:', error);
-    alert('An error occurred. Please try again.');
+    alert(`An error occurred: ${error.message}`);
   }
 });
 
@@ -111,7 +119,15 @@ document.getElementById('signupFormElement').addEventListener('submit', async (e
       body: JSON.stringify({ username, email, password })
     });
     
-    const data = await response.json();
+    let data;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    } else {
+      const text = await response.text();
+      console.error('Non-JSON response:', text);
+      throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+    }
     
     if (response.ok) {
       localStorage.setItem('token', data.token);
@@ -122,7 +138,7 @@ document.getElementById('signupFormElement').addEventListener('submit', async (e
     }
   } catch (error) {
     console.error('Signup error:', error);
-    alert('An error occurred. Please try again.');
+    alert(`An error occurred: ${error.message}`);
   }
 });
 

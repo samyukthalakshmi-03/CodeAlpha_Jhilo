@@ -16,14 +16,15 @@ function createApp() {
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
   // Routes
-  app.use('/api/auth', authRoutes);
-  app.use('/api/users', userRoutes);
-  app.use('/api/posts', postRoutes);
-  app.use('/api/comments', commentRoutes);
-  app.use('/api/notifications', notificationRoutes);
+  // Support both /api/auth and /auth routes for flexibility across environments
+  app.use(['/api/auth', '/auth'], authRoutes);
+  app.use(['/api/users', '/users'], userRoutes);
+  app.use(['/api/posts', '/posts'], postRoutes);
+  app.use(['/api/comments', '/comments'], commentRoutes);
+  app.use(['/api/notifications', '/notifications'], notificationRoutes);
 
   // Health check
-  app.get('/api/health', (req, res) => {
+  app.get(['/api/health', '/health'], (req, res) => {
     res.json({ message: 'Server is running' });
   });
 

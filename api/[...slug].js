@@ -1,14 +1,20 @@
-const serverless = require('serverless-http');
 const createApp = require('../server/app');
 const connectDB = require('../server/db');
 
-let handler;
+let app;
 
 module.exports = async (req, res) => {
-  if (!handler) {
+  try {
+    if (!app) {
+      app = createApp();
+    }
     await connectDB();
-    const app = createApp();
-    handler = serverless(app);
+    return app(req, res);
+  } catch (error) {
+    console.error('API Error:', error);
+    res.status(500).json({ 
+      message: 'Internal server error', 
+      error: error.message 
+    });
   }
-  return handler(req, res);
 };
